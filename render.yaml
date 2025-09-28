@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: voice-text-analyzer
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn simple_text_analysis:app --bind 0.0.0.0:$PORT
