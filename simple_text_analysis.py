@@ -248,6 +248,10 @@ grammar_checker = EnhancedGrammarChecker()
 def analyze_text_endpoint():
     """Enhanced endpoint for analyzing text with hybrid approach"""
     try:
+        # Get JSON data with proper error handling
+        if not request.is_json:
+            return jsonify({'error': 'Request must be JSON'}), 400
+            
         data = request.get_json()
         
         if not data:
@@ -287,9 +291,10 @@ def analyze_text_endpoint():
         
     except Exception as e:
         logger.error(f"Error in analyze-text endpoint: {str(e)}")
+        # Fixed: Don't use 'data' in exception handler
         return jsonify({
             'error': f'Analysis failed: {str(e)}',
-            'corrected_sentence': data.get('text', ''),
+            'corrected_sentence': '',
             'wrong_word_count': 0,
             'corrections': [],
             'analysis_summary': 'Analysis failed due to an error'
